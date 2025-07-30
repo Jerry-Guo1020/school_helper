@@ -1,84 +1,90 @@
 <template>
     <div class="scrollar">
-        <div class="icon">
-            <img src="/home/tonggao.png"  class="icon-img "/>
-        </div>
-        <span class="status">[官方消息]</span>
+        <img src="/home/tonggao.png" class="scrollar-icon" />
+        <span class="status">【官方消息】</span>
         <div class="marquee-wrapper">
-            <div class="marquee">
-                {{ message }}
-            </div>
+            <div class="marquee">{{ message }}</div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
-const message = ref('欢迎使用校园助手！请注意查看最新通知。');
+import { ref } from 'vue'
+const message = ref('发广告直接封禁账号！无论什么广告！')
 </script>
 
 <style scoped>
 .scrollar {
-    width: 95%;
-    height: 40px;
-    background-color: #b4fac8;
+    width: 100%;
+    background: #b4fac8;
     border: 3px solid #000;
     border-radius: 12px;
-    margin: 10px auto;
+    padding: 8px 18px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
+    margin: 10px 0;
+    min-width: 0;
 }
 
-.icon {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.scrollar-icon {
+    width: 28px;
+    height: 28px;
     margin-right: 10px;
-    margin-left: 15px;
-    
-}
-
-.icon-img {
-  width: 22px;
-  height: 22px;
+    flex-shrink: 0;
 }
 
 .status {
     font-size: 18px;
-    color: red;
-    font-weight: 800;
-    flex-shrink: 0;             /*子元素会随着父元素的缩小而缩小 */
-    margin-right: 6px;
+    color: #e10029;
+    font-weight: 900;
+    margin-right: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
-/*跑马灯的效果 */
 .marquee-wrapper {
     flex: 1;
     overflow: hidden;
-    position: relative;
-    height: 40px;
+    height: 34px;
     display: flex;
     align-items: center;
 }
 
 .marquee {
-    white-space: nowrap;        /*文本内容不换行 */
-    display: inline-block;      /*一行内展示 */
-    font-size: 20px;
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 18px;
     font-weight: 700;
-    color: #000;
-    animation: scroll-left 10s linear infinite;     /*元素在 10 秒内线性运动，并且无限循环 */
+    color: #222;
+    animation: scroll-left 10s linear infinite;
+    min-width: 0;
 }
 
 @keyframes scroll-left {
     0% {
         transform: translateX(100%);
     }
+
     100% {
         transform: translateX(-100%);
+    }
+}
+
+/* 响应式缩放 */
+@media (max-width: 480px) {
+    .scrollar {
+        padding: 6px 8px;
+    }
+
+    .scrollar-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .status,
+    .marquee {
+        font-size: 14px;
     }
 }
 </style>

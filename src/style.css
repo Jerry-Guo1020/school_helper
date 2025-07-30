@@ -3,7 +3,14 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #f2fbfb;
+  background: linear-gradient(180deg,
+      #a7ecd3 40%,
+      /* 中段过渡柔和 */
+      #b4fac8 85%,
+      /* 底部与导航栏主色融合 */
+      #b4fac8 100%
+      /* 导航栏底色！ */
+    );
 
 
 }
