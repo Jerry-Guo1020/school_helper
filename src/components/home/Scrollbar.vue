@@ -23,7 +23,6 @@ const message = ref('发广告直接封禁账号！无论什么广告！')
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    margin: 10px 0;
     min-width: 0;
 }
 

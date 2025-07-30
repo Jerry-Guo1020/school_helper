@@ -1,22 +1,18 @@
-html,
-body {
-  height: 100%;
+html, body {
   margin: 0;
   padding: 0;
+  /* 全屏渐变背景 */
   background: linear-gradient(180deg,
-      #a7ecd3 40%,
-      /* 中段过渡柔和 */
-      #b4fac8 85%,
-      /* 底部与导航栏主色融合 */
-      #b4fac8 100%
-      /* 导航栏底色！ */
-    );
-
-
+    #a7ecd3 40%,
+    #b4fac8 85%,
+    #b4fac8 100%
+  );
+  min-height: 100vh;
 }
 
 #app {
   min-height: 100vh;
-  min-width: 100%;
+  min-width: 100vw;
   background: transparent;
+  /* 不要设置宽度或固定颜色 */
 }
