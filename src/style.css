@@ -1,7 +1,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  /* 全屏渐变背景 */
   background: linear-gradient(180deg,
     #a7ecd3 40%,
     #b4fac8 85%,
@@ -12,7 +11,5 @@ html, body {
 
 #app {
   min-height: 100vh;
-  min-width: 100vw;
   background: transparent;
-  /* 不要设置宽度或固定颜色 */
 }
