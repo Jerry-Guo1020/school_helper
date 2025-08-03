@@ -1,5 +1,14 @@
 <template>
     <div class="activity-container">
+        <div class="top">
+                <div class="title">活动</div>
+                <div class="addfriend">
+                    <img src="/message/添加好友.svg" alt="添加好友" class="addfriendIcon" />
+                </div>
+                <div class="search">
+                    <img src="/message/搜索.svg" alt="添加好友" class="searchIcon" />
+                </div>
+            </div>
         <!-- 顶部banner -->
         <div class="activity-banner-wrap">
             <Carousel />
@@ -49,6 +58,34 @@ import { activityList } from '/src/data/activity/activityList.js'
 
 }
 
+.top {
+    width: 100%;
+    display: flex;
+    height: 50px;
+    margin-top: 35px;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 32px;
+    flex: 1;
+}
+
+.addfriend,
+.search {
+    display: flex;
+    align-items: center;
+}
+
+.addfriendIcon,
+.searchIcon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+
+
 /* 顶部banner整体包裹留白+圆角 */
 .activity-banner-wrap {
     width: 100%;
@@ -72,7 +109,7 @@ import { activityList } from '/src/data/activity/activityList.js'
     align-items: center;
     background: #e5fff2;
     border-radius: 10px;
-    margin: 0 0 8px 0;
+    margin: 8px 0 8px 0;
     padding: 6px 10px;
     font-size: 1.08rem;
 
