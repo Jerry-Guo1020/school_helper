@@ -1,6 +1,6 @@
 <template>
     <div class="function-card">
-        <div class="function-item" v-for="item in functionList" :key="item.title">
+        <div class="function-item" v-for="item in functionList" :key="item.title" @click="go(item.path)">
             <img class="function-icon" :src="item.icon" />
             <div class="function-title">{{ item.title }}</div>
         </div>
@@ -9,6 +9,11 @@
 
 <script setup>
 import { functionList } from '../../data/home/functionList.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const go = (path) => {
+    router.push(path)
+}
 </script>
 
 <style scoped>
