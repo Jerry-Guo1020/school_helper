@@ -29,6 +29,8 @@ const props = defineProps({
     margin: 15px auto;
     display: flex;
     align-items: center;
+    padding: 8px;
+    min-height: 70px;
 }
 
 .content {
@@ -92,7 +94,6 @@ const props = defineProps({
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 210px;
-    /* 你可以按实际情况调整 */
     font-weight: 400;
 }
 
