@@ -1,342 +1,209 @@
 <template>
-    <div class="container">
-        <div class="main-content">
-            <!-- 个人信息 -->
-            <div class="title">我的</div>
-            <div class="user-info">
-                <div class="avatar">
-                    <img :src="userInfo.avatar" class="avatar-img" />
-                </div>
-                <div class="username">{{ userInfo.username }}</div>
-            </div>
-            <!-- 功能卡片一行两列 -->
-            <div class="function-row">
-                <Card title="会员商城" desc="享你所想" colorFrom="#ffd891" colorTo="#fff" :icon="heartIcon" />
-                <Card title="延保服务" desc="保障你的利益" colorFrom="#f8c3cb" colorTo="#fff" :icon="heartIcon" />
-            </div>
-
-            <!-- PLUS横条 -->
-            <div class="function-content">
-                <div class="plus-row">
-                    <div class="vip">PLUS会员</div>
-                    <div class="vip-content">已经为您优惠593元</div>
-                    <button class="plus-btn">立即查看</button>
-                </div>
-                <div class="function-details">
-                    <div class="fun-title">常用功能</div>
-                    <div class="details">
-                        <div v-for="item in functions" :key="item.path"
-                            :class="['functions', { active: route.push === item.push }]" @click="go(item.path)">
-                            <img class="icon" :src="route.path === item.path ? item.activeIcon : item.icon" />
-                            <span class="label">{{ item.label }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="other-function">
-                    <div class="fun-title">其他服务</div>
-                    <div class="details">
-                        <div v-for="item in otherFunctions" :key="item.path"
-                            :class="['functions', { active: route.push === item.push }]" @click="go(item.path)">
-                            <img class="icon" :src="route.path === item.path ? item.activeIcon : item.icon" />
-                            <span class="label">{{ item.label }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="profile-page">
+    <!-- 顶部个人信息区 -->
+    <div class="profile-top">
+      <img :src="user.avatar" alt="avatar" class="avatar" />
+      <div class="user-info">
+        <div class="nickname">{{ user.nickname }}</div>
+        <div class="user-desc">{{ user.desc }}</div>
+      </div>
+      <!-- 可加ID/认证等 -->
+      
+      <!-- 水印大logo，可选 -->
+      <img src="" class="bg-logo" alt="logo" />
     </div>
-    <Navbar />
+
+    <!-- Tab区 -->
+    <div class="tab-bar">
+      <div
+        v-for="tab in tabs"
+        :key="tab.key"
+        class="tab-item"
+        :class="{ active: currentTab === tab.key }"
+        @click="currentTab = tab.key"
+      >
+        {{ tab.label }}
+      </div>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="tab-content">
+      <!-- 收藏tab -->
+      <div v-if="currentTab === 'collect'">
+        <div v-if="collectList.length === 0" class="empty-state">
+          <img :src="emptyImg" alt="empty" class="empty-img" />
+          <div class="empty-text">还没有收藏的店铺</div>
+        </div>
+        <div v-else>
+          <!-- 有内容时展示收藏列表 -->
+        </div>
+      </div>
+      <!-- 订单tab -->
+      <div v-if="currentTab === 'order'">
+        <div class="empty-state">
+          <img :src="emptyImg" alt="empty" class="empty-img" />
+          <div class="empty-text">暂无订单记录</div>
+        </div>
+      </div>
+      <!-- 打卡tab -->
+      <div v-if="currentTab === 'checkin'">
+        <div class="empty-state">
+          <img :src="emptyImg" alt="empty" class="empty-img" />
+          <div class="empty-text">你还没有打过卡哦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <Navbar />
 </template>
 
 <script setup>
-import Navbar from '../../components/Navbar/Navbar.vue'
-import Card from '../../components/personal/card.vue'
 import { ref } from 'vue'
-// import heartIcon from '@/assets/heart.png' // 替换为你的实际路径
-import { useRoute, useRouter } from 'vue-router'
-const route = useRoute()
-const router = useRouter()
+import Navbar from '../../components/Navbar/navbar.vue'
 
-const userInfo = ref({
-    username: '我爱我的猫咪',
-    avatar: '/assets/SVG/personal/avator.jpg'
+// 你的图片路径（记得自己换成实际图片）
+const user = ref({
+  avatar: '/avatar.png', // 你的头像图片
+  nickname: 'LANMIN',
+  desc: 'SAVE MONEY SAVE FOOD',
+  score: 0
 })
 
-const functions = [
-    {
-        label: "我的订单",
-        path: "/dingdan",
-        icon: "/assets/SVG/personal/订单.svg",
-    },
-    {
-        label: "我的客服",
-        path: "/kefu",
-        icon: "/assets/SVG/personal/客服.svg",
-    },
-    {
-        label: "问题反馈",
-        path: "/wenti",
-        icon: "/assets/SVG/personal/问题反馈.svg",
-    },
-    {
-        label: "会员商城",
-        path: "/huiyuan",
-        icon: "/assets/SVG/personal/会员商城.svg",
-    },
-    {
-        label: "在线问诊",
-        path: "/wenzhen",
-        icon: "/assets/SVG/personal/在线问诊.svg",
-    },
-    {
-        label: "意见反馈",
-        path: "/yijian",
-        icon: "/assets/SVG/personal/意见反馈.svg",
-    },
-    {
-        label: "售后服务",
-        path: "/shouhou",
-        icon: "/assets/SVG/personal/售后服务.svg",
-    },
+const tabs = [
+  { key: 'collect', label: '收藏' },
+  { key: 'order', label: '订单' },
+  { key: 'checkin', label: '打卡' }
 ]
+const currentTab = ref('collect')
 
-const otherFunctions = [
-    {
-        label: "设备升级",
-        path: "/dingdan",
-        icon: "/assets/SVG/personal/设备升级.svg",
-    },
-    {
-        label: "设置",
-        path: "/dingdan",
-        icon: "/assets/SVG/personal/设置.svg",
-    },
-]
+// 收藏店铺数据
+const collectList = ref([]) // 没内容默认空
+// const collectList = ref([{name:'测试店'}]) // 有内容可以用这个做演示
+
+// 空状态图片（用你的插画，也可以自己替换为 /mnt/data/ebb0d8bf-ab95-4f9b-bae1-4225255a764c.png）
+const emptyImg = '/vite.svg'
 </script>
 
 <style scoped>
-.container {
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    padding-bottom: calc(72px + env(safe-area-inset-bottom, 24px));
+.profile-page {
+  min-height: 100vh;
+  background: #fafcff;
 }
 
-/* 主内容区，宽度统一，所有内容卡片、横条都对齐 */
-.main-content {
-    width: 92vw;
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 0 32px 0;
-    box-sizing: border-box;
+/* 顶部个人信息区 */
+.profile-top {
+  position: relative;
+  background: linear-gradient(135deg, #adffb0 0%, #c6ffd8 100%);
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 20px 0 20px;
+  overflow: hidden;
 }
-
-.title {
-    margin-left: 14px;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-top: 35px;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    margin: 20px 0 0 7px;
-}
-
 .avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 16px #b8ffbb50;
+  z-index: 1;
+}
+.user-info {
+  margin-left: 80px;
+  margin-top: -56px;
+  z-index: 1;
+}
+.nickname {
+  font-size: 1.32rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 2px;
+}
+.user-desc {
+  font-size: 0.95rem;
+  color: #3c8d50;
+  opacity: .83;
+  font-weight: 500;
+}
+.user-score {
+  position: absolute;
+  left: 20px;
+  top: 140px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+.score-icon {
+  width: 18px;
+  margin-right: 6px;
+}
+.user-score span {
+  font-size: 1.08rem;
+  color: #222;
+  font-weight: 700;
 }
 
-.avatar-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
+.bg-logo {
+  position: absolute;
+  right: 24px;
+  top: 44px;
+  width: 120px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.username {
-    margin-left: 18px;
-    font-weight: 600;
-    font-size: 1.35rem;
+/* tab栏 */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 10px #e9ffe6b2;
+  margin-top: -12px;
+  z-index: 2;
+  position: relative;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0 10px 0;
+  font-weight: 600;
+  font-size: 1.11rem;
+  color: #333;
+  cursor: pointer;
+  transition: color .15s;
+  border-bottom: 3px solid transparent;
+}
+.tab-item.active {
+  color: #00a854;
+  border-bottom: 3px solid #00e37f;
 }
 
-
-.function-row {
-    display: flex;
-    flex-direction: row;
-    gap: 22px;
-    width: 100%;
-
+/* 内容区 */
+.tab-content {
+  min-height: 320px;
+  background: #fafcff;
+  padding: 44px 0 0 0;
 }
 
-.function-row :deep(.card) {
-    flex: 1 1 0;
-    width: 100%;
-    min-width: 0;
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+  color: #888;
 }
-
-.plus-row {
-    width: 100%;
-    background: #343434;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    height: 44px;
-    margin: 0 0 0 0;
-    color: #fff;
-    font-size: 1.15rem;
-    gap: 18px;
-    box-sizing: border-box;
+.empty-img {
+  width: 105px;
+  margin-bottom: 16px;
+  opacity: .92;
 }
-
-.vip {
-    position: relative;
-    padding-right: 18px;
-    font-weight: bold;
-    color: #21e5b5;
-    margin-right: 8px;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    /* 严禁跳行*/
-}
-
-.vip::after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 18px;
-    background: #bbb;
-    opacity: 1.7;
-
-}
-
-.vip-content {
-    flex: 1 1 0;
-    color: #fff;
-    font-weight: 500;
-    font-size: 12px;
-    white-space: nowrap;
-    /* 严禁跳行*/
-}
-
-.plus-btn {
-    background: #fff;
-    color: #222;
-    border: none;
-    border-radius: 5px;
-    padding: 2px 8px;
-    font-weight: bold;
-    box-shadow: 0 2px 4px #0001;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-    /* 严禁跳行*/
-}
-
-.plus-btn:hover {
-    background: #f5f5f5;
-}
-
-.function-content {
-    padding: 0 12px;
-}
-
-.function-details {
-    height: 100%;
-    box-shadow: 0 2px 4px #0001;
-    background-color: #fff;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-.functions {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.fun-title {
-    padding-left: 15px;
-    padding-top: 10px;
-    font-weight: 600;
-}
-
-.details {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px 0;
-    justify-items: center;
-    align-items: center;
-    padding: 18px 0 0 0;
-}
-
-.icon {
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 32px;
-    min-width: 18px;
-    height: auto;
-    aspect-ratio: 1/1;
-    margin-bottom: 10px;
-}
-
-.label {
-    margin-bottom: 10px;
-    color: #a7a7a7;
-}
-
-
-.other-function {
-    height: 100%;
-    box-shadow: 0 2px 4px #0001;
-    background-color: #fff;
-    margin-top: 25px;
-    border-radius: 12px;
-}
-
-
-@media (max-width: 600px) {
-    .main-content {
-        width: 98vw;
-        max-width: 100vw;
-        padding: 0 0 24px 0;
-    }
-
-    .function-row {
-        gap: 10px;
-    }
-
-    .plus-row {
-        height: 38px;
-        font-size: 1rem;
-    }
-
-    .title {
-        font-size: 1.32rem;
-        margin: 35px 0 13px 10px;
-    }
-
+.empty-text {
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: #222;
 }
 </style>
