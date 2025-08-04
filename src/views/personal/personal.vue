@@ -1,18 +1,37 @@
 <template>
   <div class="profile-page">
-    <!-- 顶部个人信息区 -->
+    <!-- 绿色顶区：头像+昵称+按钮+统计栏都包含在一起 -->
     <div class="profile-top">
-      <img :src="user.avatar" alt="avatar" class="avatar" />
-      <div class="user-info">
-        <div class="nickname">{{ user.nickname }}</div>
-        <div class="user-desc">{{ user.desc }}</div>
+      <div class="profile-main">
+        <img :src="user.avatar" alt="avatar" class="avatar" />
+        <div class="user-meta">
+          <div class="nickname-row">
+            <span class="nickname">{{ user.nickname }}</span>
+            <img v-if="user.verified" src="/vite.svg" class="verified-icon" />
+          </div>
+          <div class="userid">@{{ user.userid }}</div>
+        </div>
+        <div class="profile-btn">
+        <button class="main-btn">个人主页</button>
       </div>
-      <!-- 可加ID/认证等 -->
+      </div>
       
-      <!-- 水印大logo，可选 -->
-      <img src="" class="bg-logo" alt="logo" />
+      <!-- 统计栏横排 (现在放在绿色背景内部) -->
+      <div class="profile-stats">
+        <div class="stat-col">
+          <div class="stat-num">{{ user.following }}</div>
+          <div class="stat-label">关注</div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-num">{{ user.fans }}</div>
+          <div class="stat-label">粉丝</div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-num">{{ user.visitor }}</div>
+          <div class="stat-label">访客</div>
+        </div>
+      </div>
     </div>
-
     <!-- Tab区 -->
     <div class="tab-bar">
       <div
@@ -25,63 +44,60 @@
         {{ tab.label }}
       </div>
     </div>
-
     <!-- 内容区 -->
     <div class="tab-content">
-      <!-- 收藏tab -->
-      <div v-if="currentTab === 'collect'">
-        <div v-if="collectList.length === 0" class="empty-state">
-          <img :src="emptyImg" alt="empty" class="empty-img" />
-          <div class="empty-text">还没有收藏的店铺</div>
+      <div v-if="currentTab === 'posts'">
+        <div v-if="postList.length === 0" class="empty-state">
+          <img :src="emptyPostImg" alt="empty" class="empty-img" />
+          <div class="empty-text">还没有发布过动态</div>
         </div>
         <div v-else>
-          <!-- 有内容时展示收藏列表 -->
+          <div v-for="item in postList" :key="item.id" class="post-item">
+            <div class="post-title">{{ item.title }}</div>
+            <div class="post-content">{{ item.content }}</div>
+          </div>
         </div>
       </div>
-      <!-- 订单tab -->
-      <div v-if="currentTab === 'order'">
-        <div class="empty-state">
-          <img :src="emptyImg" alt="empty" class="empty-img" />
-          <div class="empty-text">暂无订单记录</div>
+      <div v-if="currentTab === 'liked'">
+        <div v-if="likedList.length === 0" class="empty-state">
+          <img :src="emptyLikeImg" alt="empty" class="empty-img" />
+          <div class="empty-text">还没有赞过的内容</div>
         </div>
-      </div>
-      <!-- 打卡tab -->
-      <div v-if="currentTab === 'checkin'">
-        <div class="empty-state">
-          <img :src="emptyImg" alt="empty" class="empty-img" />
-          <div class="empty-text">你还没有打过卡哦</div>
+        <div v-else>
+          <div v-for="item in likedList" :key="item.id" class="post-item">
+            <div class="post-title">{{ item.title }}</div>
+            <div class="post-content">{{ item.content }}</div>
+          </div>
         </div>
       </div>
     </div>
+    <Navbar />
   </div>
-  <Navbar />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import Navbar from '../../components/Navbar/navbar.vue'
 
-// 你的图片路径（记得自己换成实际图片）
 const user = ref({
-  avatar: '/avatar.png', // 你的头像图片
-  nickname: 'LANMIN',
-  desc: 'SAVE MONEY SAVE FOOD',
-  score: 0
+  avatar: '/mnt/data/175d8cf3-7d6e-4f83-8f33-64b48d19685c.png', // 新头像
+  nickname: '海豚-630390',
+  userid: '630390',
+  verified: true,
+  following: 3,
+  fans: 4,
+  visitor: 2,
 })
 
 const tabs = [
-  { key: 'collect', label: '收藏' },
-  { key: 'order', label: '订单' },
-  { key: 'checkin', label: '打卡' }
+  { key: 'posts', label: '动态' },
+  { key: 'liked', label: '赞过' }
 ]
-const currentTab = ref('collect')
-
-// 收藏店铺数据
-const collectList = ref([]) // 没内容默认空
-// const collectList = ref([{name:'测试店'}]) // 有内容可以用这个做演示
-
-// 空状态图片（用你的插画，也可以自己替换为 /mnt/data/ebb0d8bf-ab95-4f9b-bae1-4225255a764c.png）
-const emptyImg = '/vite.svg'
+const currentTab = ref('posts')
+const postList = ref([])
+const likedList = ref([])
+const emptyPostImg = '/mnt/data/e4f8b829-2ce8-4387-a799-1a690c65802a.png'
+const emptyLikeImg = '/mnt/data/c9b4b9c4-f313-4959-9549-806d584b7c3d.png'
 </script>
 
 <style scoped>
@@ -89,18 +105,21 @@ const emptyImg = '/vite.svg'
   min-height: 100vh;
   background: #fafcff;
 }
-
-/* 顶部个人信息区 */
+/* 绿色大背景包裹所有内容 */
 .profile-top {
-  position: relative;
   background: linear-gradient(135deg, #adffb0 0%, #c6ffd8 100%);
-  height: 180px;
+  padding: 26px 20px 18px 20px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 0 20px 0 20px;
-  overflow: hidden;
+  align-items: stretch;
+  position: relative;
+  margin-bottom: 10px;
+}
+/* 上排 头像+信息+按钮 横排分布 */
+.profile-main {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 }
 .avatar {
   width: 64px;
@@ -108,60 +127,88 @@ const emptyImg = '/vite.svg'
   border-radius: 50%;
   border: 3px solid #fff;
   box-shadow: 0 4px 16px #b8ffbb50;
-  z-index: 1;
+  object-fit: cover;
+  background: #fff;
 }
-.user-info {
-  margin-left: 80px;
-  margin-top: -56px;
-  z-index: 1;
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  margin-left: 14px;
+}
+.nickname-row {
+  display: flex;
+  align-items: center;
 }
 .nickname {
-  font-size: 1.32rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  color: #222;
+}
+.verified-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.userid {
+  margin-top: 4px;
+  font-size: 1rem;
+  color: #6bc098;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.profile-btn {
+  margin-left: auto;
+}
+.main-btn {
+  background: #fff;
+  border-radius: 16px;
+  padding: 7px 24px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3cb478;
+  box-shadow: 0 2px 10px #e9ffe6b2;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background .18s;
+}
+.main-btn:hover {
+  background: #f1fff3;
+}
+/* 统计栏横排 包含在绿色背景内，紧跟头像信息下方 */
+.profile-stats {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+.stat-col {
+  text-align: center;
+  flex: 1;
+}
+.stat-num {
+  font-size: 1.13rem;
+  font-weight: 800;
   color: #222;
   margin-bottom: 2px;
 }
-.user-desc {
-  font-size: 0.95rem;
-  color: #3c8d50;
-  opacity: .83;
-  font-weight: 500;
+.stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3b686a;
+  opacity: .87;
 }
-.user-score {
-  position: absolute;
-  left: 20px;
-  top: 140px;
-  display: flex;
-  align-items: center;
-  z-index: 2;
-}
-.score-icon {
-  width: 18px;
-  margin-right: 6px;
-}
-.user-score span {
-  font-size: 1.08rem;
-  color: #222;
-  font-weight: 700;
-}
-
-.bg-logo {
-  position: absolute;
-  right: 24px;
-  top: 44px;
-  width: 120px;
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* tab栏 */
+/* tab等内容区保留你的原样式 */
 .tab-bar {
   display: flex;
   background: #fff;
   border-radius: 0 0 16px 16px;
   box-shadow: 0 2px 10px #e9ffe6b2;
-  margin-top: -12px;
+  margin-top: -10px;
   z-index: 2;
   position: relative;
 }
@@ -180,15 +227,29 @@ const emptyImg = '/vite.svg'
   color: #00a854;
   border-bottom: 3px solid #00e37f;
 }
-
-/* 内容区 */
 .tab-content {
   min-height: 320px;
   background: #fafcff;
   padding: 44px 0 0 0;
 }
-
-/* 空状态 */
+.post-item {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0001;
+  margin: 14px 18px;
+  padding: 18px 16px 10px 16px;
+  font-size: 1rem;
+}
+.post-title {
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+.post-content {
+  color: #666;
+  font-size: 0.98rem;
+  word-break: break-all;
+}
 .empty-state {
   display: flex;
   flex-direction: column;
