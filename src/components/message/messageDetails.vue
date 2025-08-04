@@ -120,7 +120,7 @@ const props = defineProps({
   }
   .msg-title {
     font-size: 1rem;
-    max-width: 90px;
+    max-width: 120px;
   }
   .msg-desc {
     font-size: 0.88rem;
