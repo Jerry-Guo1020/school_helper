@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import Carousel from '../../components/home/carousel.vue';
+import Carousel from '../../components/home/functions/more/carousel.vue';
 import CampusDynamic from '../../components/home/Dynamic/CampusDynamic.vue';
 import Function from '../../components/home/function.vue';
 import Scrollbar from '../../components/home/Scrollbar.vue';
