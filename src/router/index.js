@@ -8,6 +8,7 @@ import More from "../views/home/functions/more.vue";
 import Nimingtougao from "../views/home/functions/nimingtougao.vue";
 import Schooldidi from "../views/home/functions/schooldidi.vue";
 import Shiwuzhaoling from "../views/home/functions/shiwuzhaoling.vue";
+import ConfessionDetail from "../components/home/functions/benxiaotongzhi/ConfessionDetail.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -56,6 +57,11 @@ const router = createRouter({
       path: "/shiwuzhaoling",
       component: Shiwuzhaoling,
       name: "shiwuzhaoling",
+    },
+    {
+      path: "/confession/:id",
+      name: "ConfessionDetail",
+      component: ConfessionDetail,
     },
   ],
   scrollBehavior(to, from, savedPosition) {
