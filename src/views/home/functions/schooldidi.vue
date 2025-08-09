@@ -4,10 +4,14 @@
   </div>
   <div class="contanier">
     <!-- 顶部图片区 -->
-    <div class="topphoto">
-      <div class="top-title">💌 校园表白墙</div>
-      <div class="top-subtitle">匿名倾诉心声，传递温暖</div>
-    </div>
+    <TopCard 
+      title="校园表白墙"
+      content="💌 匿名倾诉心声，传递温暖与祝福"
+      titleColor="#ff4d6d"
+      contentColor="#b23a48"
+      buttonBg="linear-gradient(90deg, #ff9a9e, #fad0c4)"
+      buttonTextColor="#fff"
+      @click="goToConfession" />
 
     <!-- 表白列表 -->
     <div class="confession-list">
@@ -39,6 +43,7 @@
 
 <script setup>
 import AddButtom from '../../../components/home/functions/nimingtougao/addButtom.vue';
+import TopCard from '../../../components/home/functions/TopCard.vue';
 import TopNavbar from '../../../components/Navbar/topNavbar.vue';
 import { confessions } from '/src/data/home/functionListDetails/xiaoyuandidi/confessions.js'; 
 import { reactive } from 'vue';

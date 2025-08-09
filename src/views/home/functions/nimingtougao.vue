@@ -3,12 +3,11 @@
         <TopNavbar title="匿名投稿" />
     </div>
     <div class="contanier">
-        <div class="topphoto">
-            <div class="top-title">纯粹表达，无需完美</div>
-            <div class="top-content">一个匿名、无压力的创意空间随时记录<br></br>你的想法、草图或语音片段。 </div>
-            <button class="top-btn">立即分享灵感</button>
-        </div>
-
+        <TopCard 
+            title="纯粹表达，无需完美"
+            content="一个匿名、无压力的创意空间随时记录<br>你的想法、草图或语音片段。"
+            buttonText="立即分享灵感"
+            @click="onClick" />
         <div class="content">
             <Info_card />
         </div>
@@ -17,6 +16,7 @@
 
 <script setup>
 import Info_card from '../../../components/home/functions/nimingtougao/info_card.vue';
+import TopCard from '../../../components/home/functions/TopCard.vue';
 import TopNavbar from '../../../components/Navbar/topNavbar.vue';
 </script>
 
