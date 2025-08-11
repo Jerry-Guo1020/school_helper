@@ -1,66 +1,56 @@
 <template>
-  <div class="container">
-    <div class="top">
-      <TopNavbar title="失物招领" />
+  <div class="top">
+    <TopNavbar title="失物招领" />
+  </div>
+
+  <div class="content">
+    <!-- 搜索栏 + 发布按钮 -->
+    <div class="search-bar">
+      <i class="icon icon-search">🔍</i>
+      <input class="search-input" placeholder="请搜索你丢失的物品" />
+      <button class="btn-add" aria-label="发布">＋</button>
     </div>
 
-    <div class="content">
-      <!-- 搜索栏 + 发布按钮 -->
-      <div class="search-bar">
-        <i class="icon icon-search">🔍</i>
-        <input class="search-input" placeholder="请搜索你丢失的物品" />
-        <button class="btn-add" aria-label="发布">＋</button>
-      </div>
+    <!-- 提示横幅 -->
+    <div class="tip-banner">
+      提示：检测到人向您索要xxxxx，请提高xxxx！
+    </div>
 
-      <!-- 提示横幅 -->
-      <div class="tip-banner">
-        提示：检测到人向您索要xxxxx，请提高xxxx！
+    <!-- 顶部 Tab -->
+    <div class="tabs">
+      <div class="tab" :class="{ active: currentTab === 'seek' }" @click="currentTab = 'seek'">
+        寻物
       </div>
-
-      <!-- 顶部 Tab -->
-      <div class="tabs">
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'seek' }"
-          @click="currentTab = 'seek'"
-        >
-          寻物
-        </div>
-        <div
-          class="tab"
-          :class="{ active: currentTab === 'found' }"
-          @click="currentTab = 'found'"
-        >
-          招领
-        </div>
+      <div class="tab" :class="{ active: currentTab === 'found' }" @click="currentTab = 'found'">
+        招领
       </div>
+    </div>
 
-      <!-- 筛选条 -->
-      <div class="filters">
-        <div class="filter-item">全部类型 <span class="caret">▾</span></div>
-        <div class="filter-item">全部时间 <span class="caret">▾</span></div>
-        <div class="filter-item">全部地点 <span class="caret">▾</span></div>
-      </div>
+    <!-- 筛选条 -->
+    <div class="filters">
+      <div class="filter-item">全部类型 <span class="caret">▾</span></div>
+      <div class="filter-item">全部时间 <span class="caret">▾</span></div>
+      <div class="filter-item">全部地点 <span class="caret">▾</span></div>
+    </div>
 
-      <!-- 列表 -->
-      <div class="list">
-        <div v-for="item in items" :key="item.id" class="card">
-          <img :src="item.img" class="thumb" alt="lost item" />
-          <div class="info">
-            <div class="title">
-              <span class="label">失物：</span>
-              <span class="name">{{ item.name }}</span>
-            </div>
-            <div class="row">
-              <span class="k">时间：</span>
-              <span class="v">{{ item.time }}</span>
-            </div>
-            <div class="row">
-              <span class="k">地点：</span>
-              <span class="v">{{ item.place }}</span>
-            </div>
-            <button class="claim">认领</button>
+    <!-- 列表 -->
+    <div class="list">
+      <div v-for="item in items" :key="item.id" class="list-card">
+        <img :src="item.img" class="thumb" alt="lost item" />
+        <div class="info">
+          <div class="list-title">
+            <span class="label">失物：</span>
+            <span class="name">{{ item.name }}</span>
           </div>
+          <div class="row">
+            <span class="k">时间：</span>
+            <span class="v">{{ item.time }}</span>
+          </div>
+          <div class="row">
+            <span class="k">地点：</span>
+            <span class="v">{{ item.place }}</span>
+          </div>
+          <button class="claim">认领</button>
         </div>
       </div>
     </div>
@@ -71,64 +61,37 @@
 import TopNavbar from '../../../components/Navbar/topNavbar.vue'
 import { ref } from 'vue'
 
-// tab 状态（仅展示）
 const currentTab = ref('seek')
 
-// 演示数据：你用后端数据替换即可
 const items = ref([
   {
     id: 1,
     name: '耳机',
     time: '三天内',
     place: '图书馆',
-    img:
-      'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=800&auto=format&fit=crop'
+    img: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: 2,
     name: 'iPad',
     time: '三天内',
     place: '教学楼',
-    img:
-      'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800&auto=format&fit=crop'
+    img: 'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: 3,
     name: 'iPhone',
     time: '一周内',
     place: '教学楼',
-    img:
-      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop'
+    img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=800&auto=format&fit=crop'
   }
 ])
 </script>
 
 <style scoped>
-:root {
-  /* 你的绿色：浅绿做背景/高亮底色，深绿做主色 */
-  --brand-soft: #b4fac8;
-  --brand: #23c46e;
-  --text: #222;
-  --muted: #777;
-  --line: #eee;
-  --white: #fff;
-}
-
-.container {
-  width: 100%;
+.content {
   max-width: 480px;
   margin: 0 auto;
-  min-height: 100vh;
-  background: #f8f9fb;
-}
-
-/* 顶部由 TopNavbar 渲染，此处不改 */
-.top {
-  width: 100%;
-}
-
-/* 内容区域 */
-.content {
   padding: 12px;
 }
 
@@ -136,11 +99,11 @@ const items = ref([
 .search-bar {
   display: flex;
   align-items: center;
-  background: var(--white);
   border: 1.5px solid #ddd;
   border-radius: 28px;
   padding: 8px 12px;
   gap: 8px;
+  background: #fff;
 }
 
 .icon-search {
@@ -153,7 +116,6 @@ const items = ref([
   border: none;
   outline: none;
   font-size: 14px;
-  color: var(--text);
 }
 
 .btn-add {
@@ -183,7 +145,6 @@ const items = ref([
   display: flex;
   gap: 36px;
   padding: 14px 8px 0;
-  background: transparent;
 }
 
 .tab {
@@ -237,11 +198,11 @@ const items = ref([
   padding-top: 8px;
 }
 
-.card {
+.list-card {
   display: grid;
   grid-template-columns: 145px 1fr;
   gap: 12px;
-  background: var(--white);
+  background:   white;
   border-radius: 12px;
   border: 1px solid var(--line);
   padding: 10px;
@@ -250,7 +211,7 @@ const items = ref([
 }
 
 .thumb {
-  width: 100%;
+  width: 145px;
   height: 145px;
   object-fit: cover;
   border-radius: 10px;
@@ -261,16 +222,16 @@ const items = ref([
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-right: 72px; /* 给“认领”按钮留空间 */
+  padding-right: 72px;
 }
 
-.title {
+.list-title {
   font-size: 20px;
   margin-bottom: 8px;
 }
 
 .label {
-  color: #f43; /* “失物：”可读性强调 */
+  color: #f43;
   font-weight: 600;
 }
 
@@ -306,15 +267,5 @@ const items = ref([
   border-radius: 999px;
   font-weight: 700;
   cursor: pointer;
-}
-
-/* 小屏适配 */
-@media (max-width: 360px) {
-  .card {
-    grid-template-columns: 120px 1fr;
-  }
-  .thumb {
-    height: 120px;
-  }
 }
 </style>
