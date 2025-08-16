@@ -10,6 +10,7 @@ import Schooldidi from "../views/home/functions/schooldidi.vue";
 import Shiwuzhaoling from "../views/home/functions/shiwuzhaoling.vue";
 import ConfessionDetail from "../components/home/functions/benxiaotongzhi/ConfessionDetail.vue";
 import Publish from "../views/publish/publish.vue";
+import Chat from "../views/message/chat.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -28,6 +29,11 @@ const router = createRouter({
       path: "/message",
       component: Message,
       name: "message",
+    },
+    { 
+      path: "/chat/:id", 
+      component: Chat,
+      name: "chat", 
     },
     {
       path: "/personal",
@@ -59,7 +65,7 @@ const router = createRouter({
       component: Shiwuzhaoling,
       name: "shiwuzhaoling",
     },
-     {
+    {
       path: "/publish",
       component: Publish,
       name: "publish",

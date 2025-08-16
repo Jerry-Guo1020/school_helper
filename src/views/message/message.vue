@@ -18,7 +18,7 @@
         <div class="message-section">
             <div class="message-details">
                 <MessageDetails v-for="item in message" :key="item.title" :avatar="item.avatar" :title="item.title"
-                    :desc="item.desc" :date="item.date" />
+                    :desc="item.desc" :date="item.date" @click="$router.push(`/chat/${item.title}`)" />
             </div>
         </div>
     </div>
